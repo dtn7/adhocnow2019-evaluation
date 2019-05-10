@@ -18,6 +18,11 @@ keyfile.pub:
 
 docker-core: docker-dtn7 docker-serval keyfile.pub
 	docker build -t coreemu . -f Dockerfile.core
+	rm dtn7{cat,d} servald
+
+docker-core_worker: docker-dtn7
+	docker build -t core_worker . -f Dockerfile.core_worker
+	rm dtn7{cat,d}
 
 run: docker-core
 	docker run -d --rm --privileged --cap-add=NET_ADMIN --cap-add=SYS_ADMIN -p 2322:22 coreemu
@@ -29,6 +34,3 @@ shell: docker-core
 
 bench: docker-core
 	docker run -it --rm --privileged --cap-add=NET_ADMIN --cap-add=SYS_ADMIN -p 2322:22 coreemu /bench_script.py | tee "bench_`date +%s`.csv"
-
-clean:
-	rm dtn7{cat,d} servald

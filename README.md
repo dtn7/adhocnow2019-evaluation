@@ -1,17 +1,21 @@
 # CORE EMU Dockerfile
 
-Execute CORE and access its GUI through SSH.
+Dockercontainers to execute CORE and access its GUI through SSH and create a
+CORE Worker with `dtn7`.
 
 ```bash
 # To build the container and run CORE-GUI
 # The container will stop itself after closing the CORE-GUI.
 make
 
-# For benchmarks
+# For benchmarks, see bench_*.py
 make bench
 
 # For a shell
 make shell
+
+# To build the CORE Worker
+make docker-core_worker
 ```
 
 ## Related Work
