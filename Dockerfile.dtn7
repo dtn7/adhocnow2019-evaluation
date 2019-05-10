@@ -1,0 +1,7 @@
+FROM golang:1.11 AS dtn7-builder
+
+RUN git clone https://github.com/dtn7/dtn7.git \
+ && cd dtn7 \
+ && git checkout 50251a4aecc821e707489e715fce9c5db0ff717b \
+ && go build -o /dtncat ./cmd/dtncat \
+ && go build -o /dtnd ./cmd/dtnd
