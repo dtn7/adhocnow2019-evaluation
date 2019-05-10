@@ -17,6 +17,53 @@ from core.enumerations import EventTypes
 import framework
 
 
+def prepare_log_file(input_file):
+    total_file_size = os.path.getsize(input_file)
+
+    if total_file_size > 20000000:
+        too_big_file = open(input_file, 'rb')
+
+        def get_chunk():
+            return too_big_file.read(20000000)
+
+        chunk_count = 0
+        for chunk in iter(get_chunk, ''):
+            chunk_path = '{}_chunk{}'.format(input_file, chunk_count)
+            with open(chunk_path, 'wb') as chunk_file:
+                chunk_file.write(chunk)
+                framework.addBinaryFile(chunk_path)
+            chunk_count = chunk_count + 1
+
+        too_big_file.close()
+
+    else:
+        framework.addBinaryFile(input_file)
+
+
+def collect_logs(session_dir):
+    for root, _, files in os.walk(session_dir):
+        for f in files:
+            src_file_path = os.path.join(root, f)
+
+            if '.conf' not in src_file_path:
+                continue
+
+            if 'store/' in src_file_path:
+                continue
+
+            session_dir_trailing = '{}/'.format(session_dir)
+            new_file_name = src_file_path.replace(session_dir_trailing,
+                                                  '').replace('/', '_')
+            dst_file_path = '{}/{}'.format(os.getcwd(), new_file_name)
+
+            try:
+                shutil.move(src_file_path, dst_file_path)
+                prepare_log_file(new_file_name)
+            except IOError:
+                continue
+
+    prepare_log_file('parameters.py')
+
 def create_node(session, name, x=None, y=None):
     "Create a new node with an optional position"
     opts = NodeOptions(name=name, model="host")
@@ -198,9 +245,7 @@ def bench(path, node_amount, interactive=False):
 
         time.sleep(0.1)
 
-    coreemu.shutdown()
-
-    return (recv_time - send_time).total_seconds()
+    return ((recv_time - send_time).total_seconds(), coreemu, session.session_dir)
 
 if __name__ in ["__main__", "__builtin__"]:
     framework.start()
@@ -213,7 +258,7 @@ if __name__ in ["__main__", "__builtin__"]:
             rand_byte = struct.pack("B", rand_int)
             f.write(rand_byte)
 
-    bench_val = bench("/dump", {{node_amount}})
+    bench_val, coreemu, session_dir = bench("/dump", {{node_amount}})
 
     log_file_name = "bench_{}.csv".format(int(time.time()))
 
@@ -221,6 +266,9 @@ if __name__ in ["__main__", "__builtin__"]:
         log_file.write("{nodes},{size},{time}".format(nodes={{node_amount}},
             size={{size}}, time=bench_val))
 
+    collect_logs(session_dir)
     framework.addBinaryFile(log_file_name)
+
+    coreemu.shutdown()
 
     framework.stop()
