@@ -108,7 +108,7 @@ def bench(path, node_amount, interactive=False):
     coreemu = globals().get(
             "coreemu",
             CoreEmu({"custom_services_dir": "/root/.core/myservices"}))
-    session = coreemu.create_session()
+    session = coreemu.create_session(_id={{simInstanceId}})
     session.set_state(EventTypes.CONFIGURATION_STATE)
 
     # Setup Nodes
