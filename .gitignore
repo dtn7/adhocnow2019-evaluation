@@ -1,3 +1,6 @@
 keyfile*
 bench_*.csv
 Experiments/
+binary_files/
+dtnd
+dtncat
