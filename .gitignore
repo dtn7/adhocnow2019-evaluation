@@ -2,5 +2,5 @@ keyfile*
 bench_*.csv
 Experiments/
 binary_files/
-dtnd
-dtncat
+dtn7d
+dtn7cat
