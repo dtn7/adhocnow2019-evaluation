@@ -198,9 +198,9 @@ def bench(path, node_amount, interactive=False):
 
         time.sleep(0.1)
 
-        coreemu.shutdown()
+    coreemu.shutdown()
 
-        return (recv_time - send_time).total_seconds()
+    return (recv_time - send_time).total_seconds()
 
 if __name__ in ["__main__", "__builtin__"]:
     framework.start()
