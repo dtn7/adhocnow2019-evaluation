@@ -26,7 +26,7 @@ def create_node(session, name, x=None, y=None):
     n = session.add_node(node_options=opts)
 
     # Override services, otherwise they won't appear on firstboot
-    servs = ["DefaultRoute"]
+    servs = ["DefaultRoute", "bwm-ng", "pidstat"]
 
     n.services = []
     session.services.add_services(n, n.type, servs)
