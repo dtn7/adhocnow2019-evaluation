@@ -11,44 +11,26 @@ def plt_line_all(df, nodes, ext):
     "Line plot for all sizes of the softwares"
     grps = df[df["nodes"] == nodes].groupby("software")
 
-    data = {}
+    data_mdns, data_errs = {}, {}
     for software, software_grp in grps:
         bytesize_grps = software_grp.groupby("bytesize")
-        bytesize_vals = [g["seconds"].median() for _, g in bytesize_grps]
+        bytesize_vals = [g["seconds"] for _, g in bytesize_grps]
 
-        data[software] = bytesize_vals
+        bytesize_mdns = [x.median() for x in bytesize_vals]
+        bytesize_errs = [x.std() for x in bytesize_vals]
 
-    df = pandas.DataFrame(data, index=INDEX)
+        data_mdns[software] = bytesize_mdns
+        data_errs[software] = bytesize_errs
 
-    for ax in df.plot(subplots=True, figsize=(6, 6)):
+    df_mdns = pandas.DataFrame(data_mdns, index=INDEX)
+    df_errs = pandas.DataFrame(data_errs, index=INDEX)
+
+    for ax in df_mdns.plot(subplots=True, yerr=df_errs, capsize=3):
         ax.set_xticklabels(INDEX)
         ax.plot()
 
     plt.xticks(range(len(INDEX)), INDEX)
     plt.savefig("plt_line_all_{}.{}".format(nodes, ext))
-
-
-def plt_line_comp23(df, ext, softwares=["dtn7-static", "serval"]):
-    grps = df.groupby("software")
-    for software, software_grp in grps:
-        if software not in softwares:
-            continue
-
-        sgrps = software_grp.groupby(["bytesize"])
-
-        node2, node3 = [], []
-        err2, err3 = [], []
-        for i, grp in sgrps:
-            node2.append(grp[grp["nodes"] == 2]["seconds"].median())
-            node3.append(grp[grp["nodes"] == 3]["seconds"].median())
-            err2.append(grp[grp["nodes"] == 2]["seconds"].std())
-            err3.append(grp[grp["nodes"] == 3]["seconds"].std())
-
-        df = pandas.DataFrame({"2 Nodes": node2, "3 Nodes": node3}, index=INDEX)
-        err_df = pandas.DataFrame({"2 Nodes": err2, "3 Nodes": err3}, index=INDEX)
-
-        fig = df.plot.bar(yerr=err_df, capsize=4).get_figure()
-        fig.savefig("plt_comp23_{}.{}".format(software, ext))
 
 
 def latex_table(df):
@@ -76,13 +58,13 @@ def latex_table(df):
 if __name__ == "__main__":
     plt.style.use("grayscale")
 
-    f = "bench_1555447066.csv"
+    f = "bench_1.csv"
     df = pandas.read_csv(f)
 
-    latex_table(df)
+    # latex_table(df)
 
-    ext = "pgf"  # change to "pgf" for LaTeX
+    ext = "png"  # change to "pgf" for LaTeX
 
-    plt_line_comp23(df, ext)
-    plt_line_all(df, 2, ext)
-    plt_line_all(df, 3, ext)
+    # plt_line_comp23(df, ext)
+    for node_no in [2, 10, 50, 100]:
+        plt_line_all(df, node_no, ext)
