@@ -1,1 +1,1 @@
-__all__ = ["dtn7", "forban", "serval"]
+__all__ = ["dtn7", "forban", "serval", "bwm", "pidstat"]

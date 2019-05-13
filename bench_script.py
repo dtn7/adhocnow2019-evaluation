@@ -59,13 +59,13 @@ def dtn7_config(node_name, peers):
     peer_conf = lambda (name, ip): '''
 [[peer]]
 node = "dtn://{name}/"
-protocol = "stcp"
+protocol = "mtcp"
 endpoint = "{ip}:35037"
     '''.format(name=name, ip=ip)
 
     return '''
 [core]
-store = "store.dat"
+store = "store/"
 inspect-all-bundles = true
 node-id = "dtn://{node_name}/"
 
@@ -78,7 +78,7 @@ node = "dtn://{node_name}/"
 listen = "127.0.0.1:8080"
 
 [[listen]]
-protocol = "stcp"
+protocol = "mtcp"
 endpoint = ":35037"
 
 {peer_conf}

@@ -1,2 +1,6 @@
 keyfile*
 bench_*.csv
+Experiments/
+binary_files/
+dtn7d
+dtn7cat
