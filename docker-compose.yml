@@ -1,0 +1,16 @@
+version: "3"
+services:
+    core:
+        build:
+            context: .
+            dockerfile: worker.Dockerfile
+        volumes:
+            - /lib/modules:/lib/modules
+            - ./dotcore:/root/.core
+            - ./core_scripts:/core_scripts
+        privileged: true
+        cap_add:
+            - NET_ADMIN
+        environment:
+            - CORE_PARAMS=/core_scripts/scenarios/default.xml
+            - DISPLAY=docker.for.mac.localhost:0

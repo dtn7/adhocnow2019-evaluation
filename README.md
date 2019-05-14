@@ -7,21 +7,6 @@ If CORE complains about missing `ebtables`, your kernel modules might not be
 available inside the container. To fix this issue, execute `modprobe ebtables`
 on your host and restart the container.
 
-```bash
-# To build the container and run CORE-GUI
-# The container will stop itself after closing the CORE-GUI.
-make
-
-# For benchmarks, see bench_*.py
-make bench
-
-# For a shell
-make shell
-
-# To build the CORE Worker
-make docker-core_worker
-```
-
 ## Related Work
 
 - <https://github.com/umr-ds/maci-serval_core_worker>
