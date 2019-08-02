@@ -1,0 +1,45 @@
+diff --git a/bin/forban_opportunistic.py b/bin/forban_opportunistic.py
+index a913892..24870c1 100644
+--- a/bin/forban_opportunistic.py
++++ b/bin/forban_opportunistic.py
+@@ -168,14 +168,16 @@ while(1):
+                     if localsize < remotesize:
+                         flogger.info("local file smaller - from %s fetching %s to be saved in %s" % (uuid,url,localfile))
+                         fetch.urlget(url,localfile)
++                        flogger.info("saved local file %s" % (localfile))
+                     elif localsize is False:
+                         flogger.info("local file not existing - from %s fetching %s to be saved in %s" % (uuid,url,localfile))
+                         fetch.urlget(url,localfile)
++                        flogger.info("saved local file %s" % (localfile))
+                     elif remotesize is False:
+                         flogger.info("remote file index issue for %s on loot %s" % (missedfile, uuid))
+                     else:
+                         flogger.info("local file larger or corrupt %s - don't fetch it" % (localfile))
+                     allindex.build()
+ 
+-    time.sleep(announceinterval*(announceinterval/(announceinterval-2)))
++    time.sleep(announceinterval)
+ 
+diff --git a/lib/loot.py b/lib/loot.py
+index f655a98..8564c01 100644
+--- a/lib/loot.py
++++ b/lib/loot.py
+@@ -91,16 +91,13 @@ class loot:
+ 
+             return defaultlastseen
+ 
+-    def lastannounced (self, uuid, timeago=300):
++    def lastannounced (self, uuid, timeago=3000000):
+ 
+         lastseen = float(self.getlastseen(uuid))
+         t = datetime.datetime.now()
+         now = time.mktime(t.timetuple())
+         gap = now-lastseen
+-        if gap < timeago:
+-            return gap
+-        else:
+-            return False
++        return gap < timeago
+ 
+     def whoami (self):
+ 

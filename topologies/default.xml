@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<scenario name="/topologies/default.xml">
+  <networks/>
+  <devices>
+    <device id="1" name="n1" type="dtnhost">
+      <position x="194" y="273" lat="47.5754889808" lon="-122.128513284" alt="2.0"/>
+      <services>
+        <service name="DefaultRoute"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+        <service name="DTN7"/>
+        <service name="Forban"/>
+        <service name="IBRDTN"/>
+        <service name="Serval"/>
+      </services>
+    </device>
+    <device id="2" name="n2" type="dtnhost">
+      <position x="651" y="297" lat="47.5750954791" lon="-122.119404751" alt="2.0"/>
+      <services>
+        <service name="DefaultRoute"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+        <service name="DTN7"/>
+        <service name="Forban"/>
+        <service name="IBRDTN"/>
+        <service name="Serval"/>
+      </services>
+    </device>
+  </devices>
+  <links>
+    <link node_one="1" node_two="2">
+      <interface_one id="0" name="eth0" mac="00:00:00:aa:00:00" ip4="10.0.0.1" ip4_mask="24" ip6="2001::1" ip6_mask="64"/>
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:01" ip4="10.0.0.2" ip4_mask="24" ip6="2001::2" ip6_mask="64"/>
+      <options type="1" unidirectional="0"/>
+    </link>
+  </links>
+  <session_origin lat="47.5791667" lon="-122.132322" alt="2.0" scale="150.0"/>
+  <session_metadata>
+    <configuration name="canvas c1" value="{name {Canvas1}}"/>
+    <configuration name="global_options" value="interface_names=no ip_addresses=yes ipv6_addresses=no node_labels=yes link_labels=yes show_api=no background_images=no annotations=yes grid=no traffic_start=0"/>
+  </session_metadata>
+  <default_services>
+    <node type="dtnhost">
+      <service name="DefaultRoute"/>
+      <service name="bwm-ng"/>
+      <service name="pidstat"/>
+      <service name="DTN7"/>
+      <service name="Forban"/>
+      <service name="IBRDTN"/>
+      <service name="Serval"/>
+    </node>
+  </default_services>
+</scenario>

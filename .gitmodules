@@ -1,0 +1,12 @@
+[submodule "dtn7"]
+	path = dtn7
+	url = https://github.com/dtn7/dtn7-go.git
+[submodule "serval-dna"]
+	path = serval-dna
+	url = https://github.com/servalproject/serval-dna.git
+[submodule "ibrdtn"]
+	path = ibrdtn
+	url = https://github.com/ibrdtn/ibrdtn.git
+[submodule "forban"]
+	path = forban
+	url = https://github.com/adulau/Forban.git
